@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   // do your magic!
   db.get();
+  res.send(`<h2>Lets code!</h2>`)
 });
 
 router.get('/:id', (req, res) => {
