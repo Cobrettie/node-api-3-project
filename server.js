@@ -1,10 +1,12 @@
 const express = require('express');
+const helmet = require('helmet');
 const postRouter = require('./posts/postRouter');
 
 const server = express();
 const PORT = 5000;
 
 server.use(express.json())
+server.use(helmet());
 server.use(postRouter);
 
 // server.get('/', (req, res) => {
@@ -14,7 +16,7 @@ server.use(postRouter);
 //custom middleware
 
 function logger(req, res, next) {
-  
+
 }
 
 server.listen(PORT, () => {
