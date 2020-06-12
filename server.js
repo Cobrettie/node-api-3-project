@@ -1,5 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
+
 const logger = require('./middleware/logger');
 const postRouter = require('./posts/postRouter');
 
@@ -15,26 +16,17 @@ server.use(helmet());
 // custom middleware
 server.use(logger('short'));
 // server.use(validateUser);
+server.use(lockout)
+
 server.use(postRouter);
 
+function lockout(req, res, next) {
+  if ((Date.now() % 3 === 0)) {
+    return res.status(403).json({ message: 'locked out' })
+  }
 
-// function validateUser(req, res, next) {
-//   if (!req.body) {
-//     res.status(400).json({
-//       message: "missing user data"
-//     })
-//   } else if (!req.body.name) {
-//     res.status(400).json({
-//       message: "missing required name field"
-//     })
-//   }
-
-//   next();
-// }
-
-// server.get('/', (req, res) => {
-//   res.send(`<h2>Let's write some middleware!</h2>`);
-// });
+  next()
+}
 
 server.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`)

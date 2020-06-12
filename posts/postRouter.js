@@ -9,8 +9,9 @@ router.get('/', (req, res) => {
   res.send(`<h2>Lets code!</h2>`)
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validateUserId(), (req, res) => {
+  // 'user' now gets attached to req in 'validateUserID'
+  res.status(200).json(req.user)
 });
 
 router.delete('/:id', (req, res) => {
@@ -23,8 +24,23 @@ router.put('/:id', (req, res) => {
 
 // custom middleware
 
-function validatePostId(req, res, next) {
-  // do your magic!
+function validateUserId() {
+  return (req, res, next) => {
+    db.getById(req.params.id)
+      .then(user => {
+        if (user) {
+          // attach user to req obj, to access later
+          req.user = user;
+
+          next();
+        } else {
+          res.status(400).json({
+            message: "invalid user id"
+          })
+        }
+      })
+      .catch(next())
+  }
 }
 
 module.exports = router;
