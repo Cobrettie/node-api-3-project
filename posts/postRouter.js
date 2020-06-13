@@ -44,7 +44,12 @@ function validateUserId() {
           })
         }
       })
-      .catch(next())
+      .catch(err => {
+        res.status(400).json({
+          errorMessage: "Error retrieving user"
+        })
+      })
+      next();
   }
 }
 
@@ -59,6 +64,22 @@ function validateUser() {
         message: "missing required name field"
       })
     }
+    next();
+  }
+}
+
+function validatePost() {
+  return (req, res, next) => {
+    if (!req.body) {
+      res.status(400).json({
+        message: "missing post data"
+      })
+    } else if (!req.body.text) {
+      res.status(400).json({
+        message: "missing required text field"
+      })
+    }
+    next();
   }
 }
 
