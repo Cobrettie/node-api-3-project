@@ -15,18 +15,17 @@ server.use(helmet());
 
 // custom middleware
 server.use(logger('short'));
-// server.use(validateUser);
-server.use(lockout)
+// server.use(lockout)
 
 server.use(postRouter);
 
-function lockout(req, res, next) {
-  if ((Date.now() % 3 === 0)) {
-    return res.status(403).json({ message: 'locked out' })
-  }
+// function lockout(req, res, next) {
+//   if ((Date.now() % 3 === 0)) {
+//     return res.status(403).json({ message: 'locked out' })
+//   }
 
-  next()
-}
+//   next()
+// }
 
 server.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`)

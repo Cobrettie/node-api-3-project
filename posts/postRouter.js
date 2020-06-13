@@ -3,6 +3,11 @@ const db = require ('./postDb');
 
 const router = express.Router();
 
+router.use((req, res, next) => {
+  console.log('you are using postRouter');
+  next();
+})
+
 router.get('/', (req, res) => {
   // do your magic!
   db.get();
@@ -40,6 +45,20 @@ function validateUserId() {
         }
       })
       .catch(next())
+  }
+}
+
+function validateUser() {
+  return (req, res, next) => {
+    if (!req.body) {
+      res.status(400).json({
+        message: "missing user data"
+      })
+    } else if (!req.body.name) {
+      res.status(400).json({
+        message: "missing required name field"
+      })
+    }
   }
 }
 
