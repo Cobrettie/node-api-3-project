@@ -39,15 +39,33 @@ router.post('/', validateUser(), (req, res) => {
     })
 });
 
-router.post('/:id/posts', validateUserId(), validateUser(), (req, res) => {
-  // do your magic!
+router.post('/:id/posts', validatePost(), (req, res) => {
+  const postInfo = {...req.body, user_id: req.params.id}
+
+  db.insert(postInfo)
+    .then(post => {
+      res.status(200).json(post)
+    })
+    .catch(err => {
+      console.log('Error: ', err)
+      res.status(500).json({
+        errorMessage: "Failed to create post"
+      })
+    })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId(), (req, res) => {
   // do your magic!
+  db.getUserPosts(req.params.id)
+    .then(posts => {
+      res.status(200).json(posts)
+    })
+    .catch(err => {
+      console.log('Error: ', err)
+    })
 });
 
-router.put('/:id', validateUser(), (req, res) => {
+router.put('/:id', validateUserId(), validateUser(), (req, res) => {
   db.update(req.params.id, req.body)
     .then(user => {
       res.status(200).json(user)
