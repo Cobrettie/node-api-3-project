@@ -1,5 +1,6 @@
 const express = require('express');
-const db = require('./userDb');
+const userdb = require('./userDb');
+const postdb = require('../posts/postDb');
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.use((req, res, next) => {
 })
 
 router.get('/', (req, res) => {
-  db.get()
+  userdb.get()
     .then(users => {
       res.status(200).json(users)
     })
@@ -27,7 +28,7 @@ router.get('/:id', validateUserId(), (req, res) => {
 });
 
 router.post('/', validateUser(), (req, res) => {
-  db.insert(req.body)
+  userdb.insert(req.body)
     .then(user => {
       res.status(201).json(user)
     })
@@ -42,7 +43,7 @@ router.post('/', validateUser(), (req, res) => {
 router.post('/:id/posts', validatePost(), (req, res) => {
   const postInfo = {...req.body, user_id: req.params.id}
 
-  db.insert(postInfo)
+  postdb.insert(postInfo)
     .then(post => {
       res.status(200).json(post)
     })
@@ -56,7 +57,7 @@ router.post('/:id/posts', validatePost(), (req, res) => {
 
 router.get('/:id/posts', validateUserId(), (req, res) => {
   // do your magic!
-  db.getUserPosts(req.params.id)
+  userdb.getUserPosts(req.params.id)
     .then(posts => {
       res.status(200).json(posts)
     })
@@ -66,7 +67,7 @@ router.get('/:id/posts', validateUserId(), (req, res) => {
 });
 
 router.put('/:id', validateUserId(), validateUser(), (req, res) => {
-  db.update(req.params.id, req.body)
+  userdb.update(req.params.id, req.body)
     .then(user => {
       res.status(200).json(user)
     })
@@ -79,7 +80,7 @@ router.put('/:id', validateUserId(), validateUser(), (req, res) => {
 });
 
 router.delete('/:id', validateUserId(), (req, res) => {
-  db.remove(req.params.id)
+  userdb.remove(req.params.id)
     .then(() => {
       res.status(200).json({
         message: "user deleted"
@@ -96,7 +97,7 @@ router.delete('/:id', validateUserId(), (req, res) => {
 
 function validateUserId() {
   return (req, res, next) => {
-    db.getById(req.params.id)
+    userdb.getById(req.params.id)
       .then(user => {
         if (user) {
           // attach user to req obj, to access later

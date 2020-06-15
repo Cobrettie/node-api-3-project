@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require ('./postDb');
+const postdb = require ('./postDb');
 
 const router = express.Router();
 
@@ -9,15 +9,21 @@ router.use((req, res, next) => {
 })
 
 router.get('/', (req, res) => {
-  // do your magic!
-  db.get();
-  res.send(`<h2>Lets code!</h2>`)
+  postdb.get()
+    .then(posts => {
+      res.status(200).json(posts)
+    })
+    .catch(err => {
+      console.log('Error: ', err)
+      res.status(500).json({
+        errorMessage: "Failed to retrieve posts"
+      })
+    })
 });
 
-// router.get('/:id', validateUserId(), (req, res) => {
-//   // 'user' now gets attached to req in 'validateUserID'
-//   res.status(200).json(req.user)
-// });
+router.get('/:id', (req, res) => {
+
+});
 
 router.delete('/:id', (req, res) => {
   // do your magic!

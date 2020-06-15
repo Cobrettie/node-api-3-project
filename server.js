@@ -10,6 +10,7 @@ const PORT = 5000;
 server.use(express.json())
 server.use(logger('short'));
 server.use('/api/users', userRouter);
+server.use('/api/posts', postRouter);
 
 server.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`)
