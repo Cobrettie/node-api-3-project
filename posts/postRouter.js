@@ -42,6 +42,18 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // do your magic!
+  postdb.remove(req.params.id)
+    .then(() => {
+      res.status(200).json({
+        message: "Post removed"
+      })
+    })
+    .catch(err => {
+      console.log('Error: ', err);
+      res.status(500).json({
+        errorMessage: "Could not remove post"
+      })
+    })
 });
 
 router.put('/:id', (req, res) => {
