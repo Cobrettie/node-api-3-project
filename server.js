@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 
 const logger = require('./middleware/logger');
+const userRouter = require('./users/userRouter');
 const postRouter = require('./posts/postRouter');
 
 const server = express();
@@ -17,7 +18,8 @@ server.use(helmet());
 server.use(logger('short'));
 // server.use(lockout)
 
-server.use(postRouter);
+server.use(userRouter);
+// server.use(postRouter);
 
 // function lockout(req, res, next) {
 //   if ((Date.now() % 3 === 0)) {
