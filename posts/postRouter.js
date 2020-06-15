@@ -58,6 +58,22 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // do your magic!
+  postdb.update(req.params.id, req.body)
+    .then(updatedPost => {
+      if (updatedPost) {
+        res.status(200).json(updatedPost)
+      } else {
+        res.status(400).json({
+          errorMessage: "Could not find post to update"
+        })
+      }
+    })
+    .catch(err => {
+      console.log('Error: ', err);
+      res.status(500).json({
+        errorMessage: "Post could not be updated"
+      })
+    })
 });
 
 // custom middleware
