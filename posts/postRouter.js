@@ -22,7 +22,22 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-
+  postdb.getById(req.params.id)
+    .then(post => {
+      if (post) {
+        res.status(200).json(post)
+      } else {
+        res.status(400).json({
+          errorMessage: "Post not found"
+        })
+      }
+    })
+    .catch(err => {
+      console.log('Error: ', err)
+      res.status(500).json({
+        errorMessage: "Post could not be retrieved"
+      })
+    })
 });
 
 router.delete('/:id', (req, res) => {
