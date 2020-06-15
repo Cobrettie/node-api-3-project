@@ -41,7 +41,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
   postdb.remove(req.params.id)
     .then(() => {
       res.status(200).json({
@@ -57,7 +56,6 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // do your magic!
   postdb.update(req.params.id, req.body)
     .then(updatedPost => {
       if (updatedPost) {
