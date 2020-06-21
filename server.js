@@ -12,6 +12,12 @@ server.use(logger('short'));
 server.use('/api/users', userRouter);
 server.use('/api/posts', postRouter);
 
+server.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Server Running'
+  })
+})
+
 server.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`)
 })
