@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import UserPosts from './UserPosts';
-
 function logError(err) {
   return console.log('Error: ', err)
 }
