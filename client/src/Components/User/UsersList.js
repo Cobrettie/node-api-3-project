@@ -7,16 +7,25 @@ function logError(err) {
 }
 
 export default function UsersList() {
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [userData, setUserData] = useState();
+
+  function getAllUsers() {
+    return (
+      axios.get('http://localhost:5000/api/users')
+        .then(response => {
+          setUsers(response.data);
+          // setLoading(false);
+        })
+        .catch(err => {
+          logError(err);
+        })
+    ) 
+  }
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/users')
-      .then(response => {
-        setUsers(response.data);
-      })
-      .catch(err => {
-        logError(err);
-      })
+    getAllUsers();
   }, [])
 
   return (
@@ -24,7 +33,10 @@ export default function UsersList() {
       <h2>List of Users</h2>
       {users.map(item => {
         return (
-          <UserCard key={item.id} user={item.name} />
+          <UserCard 
+            key={item.id} 
+            user={item} 
+          />
         )
       })}
     </div>
